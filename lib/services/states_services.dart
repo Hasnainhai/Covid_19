@@ -14,4 +14,17 @@ class StatesServices {
       throw Exception('error');
     }
   }
+
+  Future<List<dynamic>> countriesApi() async {
+    final response = await http.get(Uri.parse(AppUrl.countriesApi));
+    var data;
+    if (response.statusCode == 200) {
+      data = jsonDecode(response.body);
+      return data;
+    } else if (response.statusCode == 502) {
+      throw Exception('Status code 502 error');
+    } else {
+      throw Exception('Error occure');
+    }
+  }
 }
