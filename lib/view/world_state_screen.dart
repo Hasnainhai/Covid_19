@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:covid_19/model/world_state_model.dart';
 import 'package:covid_19/services/states_services.dart';
 import 'package:flutter/material.dart';
@@ -32,31 +34,45 @@ class _WorldStateState extends State<WorldState>
               FutureBuilder(
                   future: statesServices.fetchWorldStateData(),
                   builder: (context, AsyncSnapshot<worldStateModel> snapshot) {
-                    if (snapshot.hasData) {
+                    if (!snapshot.hasData) {
                       Expanded(
-                          flex: 1,
-                          child: Center(
-                            child: SpinKitFadingCircle(
-                              color: Colors.white,
-                              controller: _controller,
-                              size: 50.0,
-                            ),
-                          ));
+                        flex: 1,
+                        child: Center(
+                          child: SpinKitFadingCircle(
+                            color: Colors.white,
+                            controller: _controller,
+                            size: 50.0,
+                          ),
+                        ),
+                      );
                     } else {
                       return Column(
                         children: [
                           PieChart(
                             dataMap: {
-                              'Total':
-                                  double.parse(snapshot.data!.cases.toString()),
-                              'Recovered': double.parse(
-                                  snapshot.data!.recovered.toString()),
+                              'Active':
+                                  double.parse(snapshot.data!.active.toString())
+                                      .toDouble(),
                               'Death': double.parse(
                                   snapshot.data!.deaths.toString()),
+                              'Recovered': double.parse(
+                                  snapshot.data!.recovered.toString()),
+                              'Critical': double.parse(
+                                  snapshot.data!.critical.toString()),
+                              'Total':
+                                  double.parse(snapshot.data!.cases.toString()),
                             },
+                            chartValuesOptions: const ChartValuesOptions(
+                              showChartValueBackground: true,
+                              showChartValues: true,
+                              showChartValuesInPercentage: true,
+                              showChartValuesOutside: false,
+                              decimalPlaces: 1,
+                            ),
                             chartType: ChartType.ring,
                             legendOptions: const LegendOptions(
                               legendPosition: LegendPosition.left,
+                              showLegends: true,
                             ),
                             colorList: colorList,
                             animationDuration: const Duration(seconds: 3),
@@ -72,20 +88,26 @@ class _WorldStateState extends State<WorldState>
                               child: Column(
                                 children: [
                                   ReuseWidget(
-                                      title: 'Cases',
-                                      value: double.parse(
-                                              snapshot.data!.cases.toString())
-                                          .toString()),
-                                  ReuseWidget(
                                       title: 'Active',
-                                      value: double.parse(
-                                              snapshot.data!.active.toString())
-                                          .toString()),
+                                      value: snapshot.data!.active.toString()),
                                   ReuseWidget(
-                                      title: 'Deaths',
+                                      title: 'Death',
                                       value: double.parse(
                                               snapshot.data!.deaths.toString())
                                           .toString()),
+                                  ReuseWidget(
+                                      title: 'Recovered',
+                                      value: double.parse(snapshot
+                                              .data!.recovered
+                                              .toString())
+                                          .toString()),
+                                  ReuseWidget(
+                                      title: 'Critical',
+                                      value:
+                                          snapshot.data!.critical.toString()),
+                                  ReuseWidget(
+                                      title: 'Total',
+                                      value: snapshot.data!.cases.toString()),
                                 ],
                               ),
                             ),
