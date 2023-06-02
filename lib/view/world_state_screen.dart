@@ -68,12 +68,8 @@ class _WorldStateState extends State<WorldState>
                                     .toDouble(),
                             'Death':
                                 double.parse(snapshot.data!.deaths.toString()),
-                            'Recovered': double.parse(
-                                snapshot.data!.recovered.toString()),
                             'Critical': double.parse(
                                 snapshot.data!.critical.toString()),
-                            'Total':
-                                double.parse(snapshot.data!.cases.toString()),
                           },
                           chartValuesOptions: const ChartValuesOptions(
                             showChartValueBackground: true,
@@ -101,9 +97,9 @@ class _WorldStateState extends State<WorldState>
                                     title: 'Active',
                                     value: snapshot.data!.active.toString()),
                                 ReuseWidget(
-                                    title: 'Death',
+                                    title: 'Critical',
                                     value: double.parse(
-                                            snapshot.data!.deaths.toString())
+                                            snapshot.data!.critical.toString())
                                         .toString()),
                                 ReuseWidget(
                                     title: 'Recovered',
@@ -111,11 +107,23 @@ class _WorldStateState extends State<WorldState>
                                             snapshot.data!.recovered.toString())
                                         .toString()),
                                 ReuseWidget(
-                                    title: 'Critical',
-                                    value: snapshot.data!.critical.toString()),
+                                    title: 'TodayRecovered',
+                                    value: snapshot.data!.todayRecovered
+                                        .toString()),
                                 ReuseWidget(
-                                    title: 'Total',
+                                    title: 'Cases',
                                     value: snapshot.data!.cases.toString()),
+                                ReuseWidget(
+                                    title: 'TodayCases',
+                                    value:
+                                        snapshot.data!.todayCases.toString()),
+                                ReuseWidget(
+                                    title: 'Deaths',
+                                    value: snapshot.data!.deaths.toString()),
+                                ReuseWidget(
+                                    title: 'todayDeaths',
+                                    value:
+                                        snapshot.data!.todayDeaths.toString()),
                               ],
                             ),
                           ),
